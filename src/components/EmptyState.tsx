@@ -1,5 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import type { ComponentProps } from 'react';
+import { memo, type ComponentProps } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
@@ -15,7 +15,7 @@ interface Props {
   onAction?: () => void;
 }
 
-export function EmptyState({ icon, title, description, actionLabel, onAction }: Props) {
+function EmptyStateComponent({ icon, title, description, actionLabel, onAction }: Props) {
   const theme = useAppTheme();
 
   return (
@@ -42,6 +42,8 @@ export function EmptyState({ icon, title, description, actionLabel, onAction }: 
     </View>
   );
 }
+
+export const EmptyState = memo(EmptyStateComponent);
 
 const styles = StyleSheet.create({
   container: {

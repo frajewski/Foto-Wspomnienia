@@ -1,15 +1,10 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
-// Placeholder slice — do usunięcia po dodaniu pierwszego prawdziwego slice'a
-const appSlice = createSlice({
-  name: 'app',
-  initialState: { initialized: true },
-  reducers: {},
-});
+import { memoriesReducer } from '@/features/memories/memoriesSlice';
 
 export const store = configureStore({
   reducer: {
-    app: appSlice.reducer,
+    memories: memoriesReducer,
   },
 });
 
