@@ -1,7 +1,7 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Constants from 'expo-constants';
 import * as Location from 'expo-location';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet, View } from 'react-native';
 import { Button, Divider, List, Text } from 'react-native-paper';
 
@@ -13,6 +13,7 @@ import {
 import { deleteImage } from '@/features/memories/services/imageStorage';
 import { clearAll as clearMemoriesStorage } from '@/features/memories/services/memoriesRepository';
 import { useCameraPermission } from '@/hooks/useCameraPermission';
+import { getOrCreateInstallId } from '@/services/installId';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useAppTheme } from '@/theme/useAppTheme';
 
@@ -48,6 +49,21 @@ export default function SettingsScreen() {
   const camera = useCameraPermission();
   const [locationPermission] = Location.useForegroundPermissions();
   const theme = useAppTheme();
+  const [installId, setInstallId] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    getOrCreateInstallId()
+      .then((id) => {
+        if (mounted) setInstallId(id);
+      })
+      .catch(() => {
+        if (mounted) setInstallId(null);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const appVersion = Constants.expoConfig?.version ?? '–';
   const buildNumber =
@@ -97,6 +113,12 @@ export default function SettingsScreen() {
           title="Wersja"
           description={buildNumber ? `${appVersion} (${buildNumber})` : appVersion}
           left={(props) => <List.Icon {...props} icon="information-outline" />}
+        />
+        <List.Item
+          title="ID instalacji"
+          description={installId ?? 'Generowanie…'}
+          descriptionNumberOfLines={1}
+          left={(props) => <List.Icon {...props} icon="fingerprint" />}
         />
       </List.Section>
 

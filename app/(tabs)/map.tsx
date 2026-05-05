@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import MapView, { Marker, PROVIDER_DEFAULT, type Region } from 'react-native-maps';
 
 import { EmptyState } from '@/components/EmptyState';
+import { OfflineBanner } from '@/components/OfflineBanner';
 import { Screen } from '@/components/Screen';
 import { selectAllMemories } from '@/features/memories/memoriesSlice';
 import { useAppSelector } from '@/store/hooks';
@@ -50,30 +51,36 @@ export default function MapScreen() {
 
   return (
     <View style={styles.container}>
-      <MapView
-        style={StyleSheet.absoluteFill}
-        provider={PROVIDER_DEFAULT}
-        initialRegion={region}
-        showsUserLocation
-        showsMyLocationButton
-      >
-        {memories.map((memory) => (
-          <Marker
-            key={memory.id}
-            coordinate={{ latitude: memory.latitude, longitude: memory.longitude }}
-            title={memory.title ?? 'Bez tytułu'}
-            description={memory.description ?? undefined}
-            onCalloutPress={() => router.push(`/memory/${memory.id}`)}
-            onPress={() => router.push(`/memory/${memory.id}`)}
-          />
-        ))}
-      </MapView>
+      <OfflineBanner ignoreTopInset message="Tryb offline — mapa może nie ładować kafelków." />
+      <View style={styles.mapWrapper}>
+        <MapView
+          style={StyleSheet.absoluteFill}
+          provider={PROVIDER_DEFAULT}
+          initialRegion={region}
+          showsUserLocation
+          showsMyLocationButton
+        >
+          {memories.map((memory) => (
+            <Marker
+              key={memory.id}
+              coordinate={{ latitude: memory.latitude, longitude: memory.longitude }}
+              title={memory.title ?? 'Bez tytułu'}
+              description={memory.description ?? undefined}
+              onCalloutPress={() => router.push(`/memory/${memory.id}`)}
+              onPress={() => router.push(`/memory/${memory.id}`)}
+            />
+          ))}
+        </MapView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  mapWrapper: {
     flex: 1,
   },
 });

@@ -22,10 +22,14 @@ import { pickImageFromGallery } from '@/features/memories/services/imagePicker';
 import { useLocation, type LocationCoords } from '@/hooks/useLocation';
 import { useAppDispatch } from '@/store/hooks';
 import { useAppTheme } from '@/theme/useAppTheme';
+import { sanitizeText } from '@/utils/sanitize';
+
+const sanitizedField = (max: number, message: string) =>
+  z.string().trim().max(max, message).transform(sanitizeText).optional();
 
 const memorySchema = z.object({
-  title: z.string().max(80, 'Tytuł może mieć maksymalnie 80 znaków.').optional(),
-  description: z.string().max(500, 'Opis może mieć maksymalnie 500 znaków.').optional(),
+  title: sanitizedField(80, 'Tytuł może mieć maksymalnie 80 znaków.'),
+  description: sanitizedField(500, 'Opis może mieć maksymalnie 500 znaków.'),
 });
 
 type MemoryFormValues = z.infer<typeof memorySchema>;

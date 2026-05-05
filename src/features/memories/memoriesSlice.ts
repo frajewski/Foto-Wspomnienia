@@ -1,5 +1,6 @@
 import { createSelector, createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
+import { mapError } from '@/services/errorMapper';
 import type { RootState } from '@/store/store';
 import type { Memory } from '@/types/memory';
 
@@ -57,19 +58,19 @@ const memoriesSlice = createSlice({
       })
       .addCase(loadMemoriesThunk.rejected, (state, action) => {
         state.status = 'error';
-        state.error = action.error.message ?? 'Nie udało się wczytać wspomnień.';
+        state.error = mapError(action.error);
       })
       .addCase(createMemoryThunk.fulfilled, (state, action) => {
         state.items = [action.payload, ...state.items];
       })
       .addCase(createMemoryThunk.rejected, (state, action) => {
-        state.error = action.error.message ?? 'Nie udało się zapisać wspomnienia.';
+        state.error = mapError(action.error);
       })
       .addCase(deleteMemoryThunk.fulfilled, (state, action) => {
         state.items = state.items.filter((m) => m.id !== action.payload);
       })
       .addCase(deleteMemoryThunk.rejected, (state, action) => {
-        state.error = action.error.message ?? 'Nie udało się usunąć wspomnienia.';
+        state.error = mapError(action.error);
       });
   },
 });
