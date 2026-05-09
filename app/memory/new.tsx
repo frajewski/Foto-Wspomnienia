@@ -14,25 +14,14 @@ import {
   View,
 } from 'react-native';
 import { ActivityIndicator, Button, HelperText, Text, TextInput } from 'react-native-paper';
-import { z } from 'zod';
 
 import { CameraCapture } from '@/features/memories/components/CameraCapture';
 import { createMemoryThunk } from '@/features/memories/memoriesThunks';
 import { pickImageFromGallery } from '@/features/memories/services/imagePicker';
+import { memorySchema, type MemoryFormValues } from '@/features/memories/validation';
 import { useLocation, type LocationCoords } from '@/hooks/useLocation';
 import { useAppDispatch } from '@/store/hooks';
 import { useAppTheme } from '@/theme/useAppTheme';
-import { sanitizeText } from '@/utils/sanitize';
-
-const sanitizedField = (max: number, message: string) =>
-  z.string().trim().max(max, message).transform(sanitizeText).optional();
-
-const memorySchema = z.object({
-  title: sanitizedField(80, 'Tytuł może mieć maksymalnie 80 znaków.'),
-  description: sanitizedField(500, 'Opis może mieć maksymalnie 500 znaków.'),
-});
-
-type MemoryFormValues = z.infer<typeof memorySchema>;
 
 type LocationState =
   | { status: 'idle' }

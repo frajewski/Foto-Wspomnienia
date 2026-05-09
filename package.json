@@ -16,6 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "jest --watchAll=false",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --watchAll=false --coverage",
     "prepare": "husky"
   },
   "dependencies": {
@@ -65,27 +66,37 @@
   "devDependencies": {
     "@testing-library/jest-native": "^5.4.3",
     "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "^30.0.0",
+    "@types/jest": "^29.5.0",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.1.1",
     "husky": "^9.1.7",
-    "jest": "^30.4.2",
+    "jest": "^29.7.0",
     "jest-expo": "^55.0.18",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
+    "react-test-renderer": "^19.1.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.59.4"
   },
   "jest": {
     "preset": "jest-expo",
-    "setupFilesAfterEach": [
+    "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.ts"
     ],
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|immer|@reduxjs/toolkit|reselect)"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "text",
+      "html"
     ]
   },
   "lint-staged": {

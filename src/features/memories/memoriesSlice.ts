@@ -44,6 +44,11 @@ const memoriesSlice = createSlice({
     },
     setError(state, action: PayloadAction<string | null>) {
       state.error = action.payload;
+      // setError(message) implikuje stan błędu; setError(null) tylko czyści error,
+      // nie resetuje statusu (np. po dismiss Snackbara status pozostaje sukcesowy).
+      if (action.payload !== null) {
+        state.status = 'error';
+      }
     },
   },
   extraReducers: (builder) => {
