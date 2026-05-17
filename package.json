@@ -17,6 +17,7 @@
     "test": "jest --watchAll=false",
     "test:watch": "jest --watch",
     "test:coverage": "jest --watchAll=false --coverage",
+    "icons": "node scripts/generate-icons.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -79,6 +80,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "react-test-renderer": "^19.1.0",
+    "sharp": "^0.34.5",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.59.4"
   },
