@@ -2,7 +2,10 @@ import * as Crypto from 'expo-crypto';
 
 import { getSecret, setSecret } from './secureStore';
 
-const INSTALL_ID_KEY = 'foto-wspomnienia:installId';
+// SecureStore akceptuje tylko [A-Za-z0-9._-] w kluczach.
+// Wcześniejszy `foto-wspomnienia:installId` (dwukropek) rzucał
+// "Invalid key provided to SecureStore" w ensureValidKey.
+const INSTALL_ID_KEY = 'foto-wspomnienia.installId';
 
 /**
  * Trwały identyfikator instancji aplikacji.

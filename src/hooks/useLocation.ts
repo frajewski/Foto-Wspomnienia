@@ -27,6 +27,7 @@ export interface UseLocationResult {
 }
 
 const TIMEOUT_MS = 15_000;
+const CACHE_MAX_AGE_MS = 120_000; // 2 min — cache wystarczy dla wspomnienia foto
 
 const MESSAGES = {
   blocked:
@@ -91,6 +92,30 @@ export function useLocation(): UseLocationResult {
       }
 
       try {
+        // Fast path: ostatnia znana pozycja (zwraca natychmiast jeśli system
+        // ma niedawny fix). Na fizycznych urządzeniach prawie zawsze trafiamy
+        // tu, bo OS cache'uje pozycję z innych aplikacji / serwisów lokalizacji.
+        //
+        // Android Emulator: domyślnie brak cache'a. Aby emulator zwrócił
+        // pozycję, otwórz Extended Controls (kropki) → Location → Set Location.
+        // Bez tego getCurrentPositionAsync (slow path) wisi do 15s timeoutu —
+        // to ograniczenie symulatora, nie bug w kodzie.
+        const cached = await Location.getLastKnownPositionAsync({
+          maxAge: CACHE_MAX_AGE_MS,
+        });
+        if (cached) {
+          return {
+            status: 'granted',
+            coords: {
+              latitude: cached.coords.latitude,
+              longitude: cached.coords.longitude,
+              accuracy: cached.coords.accuracy ?? 0,
+              timestamp: cached.timestamp,
+            },
+          };
+        }
+
+        // Slow path: live GPS fix
         const position = await withTimeout(
           Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }),
           TIMEOUT_MS,
