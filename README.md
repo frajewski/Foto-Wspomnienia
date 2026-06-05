@@ -8,7 +8,7 @@ Mobilna aplikacja do zapisywania wspomnień ze zdjęciami i lokalizacją — dzi
 
 | Lista wspomnień                       | Tworzenie                           | Mapa                                |
 | ------------------------------------- | ----------------------------------- | ----------------------------------- |
-| `![Lista](./docs/screenshots/list.png)` | `![Nowe](./docs/screenshots/new.png)` | `![Mapa](./docs/screenshots/map.png)` |
+| ![Lista](./docs/screenshots/list.png)` | ![Nowe](./docs/screenshots/new.png)` | ![Mapa](./docs/screenshots/map.png)` |
 
 Aby dodać screenshoty: zrób zdjęcie ekranu w symulatorze (`cmd+S` na iOS, narzędzie ekranowe w Android Studio), zapisz w `docs/screenshots/` i podmień ścieżki powyżej.
 
